@@ -4,7 +4,6 @@
 
 <img src="docs/imgs/logo.png" width="35%" height="35%" align="right" />
 
-# KeyBERT
+# Arizona-Text_Augmentation
 
-KeyBERT is a minimal and easy-to-use keyword extraction technique that leverages BERT embeddings to
-create keywords and keyphrases that are most similar to a document. 
+
