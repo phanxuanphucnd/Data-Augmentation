@@ -4,6 +4,6 @@
 
 <img src="docs/imgs/textmentations.gif" width="35%" height="35%" align="right" />
 
-# Arizona-TextAug
+# Arizona-Textmentations
 
 
