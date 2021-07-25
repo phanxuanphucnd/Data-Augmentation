@@ -4,6 +4,6 @@
 
 <img src="docs/imgs/text aug 2.gif" width="35%" height="35%" align="right" />
 
-# Arizona-Text_Augmentation
+# Arizona-TextAug
 
 
