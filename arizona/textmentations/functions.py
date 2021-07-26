@@ -13,7 +13,6 @@ def abbreviates_func(text: Text, replace_prob: float=0.5):
     for char in text:
         if char in s1:
             rd = random.random()
-            print(rd)
             if rd >= replace_prob:
                 output += s0[s1.index(char)]
             else:
