@@ -1,5 +1,6 @@
 {
     "version": "v0.0.1",
+    "language": "vi",
     "examples": {
         "con trai": ["ctrai"],
         "không": ["ko", "k", "khog", "kh", "hem", "khum"],
