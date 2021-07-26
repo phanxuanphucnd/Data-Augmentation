@@ -6,6 +6,10 @@ import random
 from typing import Text
 
 def abbreviates_func(text: Text, replace_prob: float=0.5):
+    
+    return 
+
+def remove_accent_func(text: Text, replace_prob: float=0.5):
     s1 = u'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹ'
     s0 = u'AAAAEEEIIOOOOUUYaaaaeeeiioooouuyAaDdIiUuOoUuAaAaAaAaAaAaAaAaAaAaAaAaEeEeEeEeEeEeEeEeIiIiOoOoOoOoOoOoOoOoOoOoOoOoUuUuUuUuUuUuUuYyYyYyYy'
     
@@ -21,10 +25,6 @@ def abbreviates_func(text: Text, replace_prob: float=0.5):
             output += char
 
     return output
-
-def remove_accent_func(text: Text, replace_prob: float=0.5):
-
-    return 
 
 
 def keyboard_func(text: Text, replace_prob: float=0.5):
