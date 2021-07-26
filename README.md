@@ -4,6 +4,19 @@
 
 <img src="docs/imgs/textmentations.gif" width="35%" height="35%" align="right" />
 
-# Arizona-Textmentations
+## Table of contents
+
+1. [Introduction](#introduction)
+2. [How to use `arizona textmentations`](#how_to_use)
+    - [Installation](#installation)
+    - [Data structure](#data_structure)
+    - [Example usage](#usage)
+
+3. [Reference](#reference)
+
+
+## <a name='introduction'></a> Introduction
+
+
 
 
