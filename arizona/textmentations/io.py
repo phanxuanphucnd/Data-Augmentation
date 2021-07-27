@@ -4,9 +4,13 @@
 import os
 import json
 import regex
+import pandas as pd
 
+from clumper import Clumper
 from pandas import DataFrame
 from typing import Pattern, Text, Union, Any
+
+from arizona.textmentations.utils import line_csv_to_dict_output
 
 def get_emoji_regex() -> Pattern:
     """Returns regex to identify emojis."""
@@ -30,7 +34,7 @@ def convert_csv_to_yaml(
     intent_col: Text='intent', 
     tags_col: Text='tags',
     export_dir: Text='./output/',
-    export_file: Text='data.yaml'
+    export_file: Text='data.yml'
 ):
     """
     Function to convert csv format to yaml format.
@@ -44,7 +48,7 @@ def convert_csv_to_yaml(
         export_file: The path to the stored file.
 
     Returns:
-        A file yaml storaged in `export_file`.
+        A file yaml/ yml storaged in `export_file`.
     """
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
@@ -60,10 +64,10 @@ def convert_yaml_to_csv(
     export_file: Text='data.csv'
 ):
     """
-    Function to convert yaml format to csv format.
+    Function to convert yaml/ yml format to csv format.
 
     Args:
-        data: A path to the data yaml format.
+        data: A path to the data yaml/ yml format.
         text_col: The text column name.
         intent_col: The intent column name. `intent_col` must be not None.
         tags_col: The tags column name. If None, the output not has entities.
@@ -71,12 +75,29 @@ def convert_yaml_to_csv(
         export_file: The path to the stored file.
 
     Returns:
-        A file csv storaged in `export_file` if not None, else return a DataFrame.
+        A DataFrame and a csv file stored in `export_file`.
     """
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
+    
+    res = (
+        Clumper.read_yaml(data)
+        .explode("nlu")
+        .keep(lambda d: "intent" in d["nlu"].keys())
+        .mutate(
+            examples=lambda d: d["nlu"]["examples"].split("\n"),
+            intent=lambda d: d["nlu"]["intent"],
+        )
+        .drop("nlu", "version")
+        .explode(text="examples")
+        .mutate(text=lambda d: d["text"][2:])
+        .keep(lambda d: d["text"] != "")
+        .collect()
+    )
 
-    return
+    df = pd.DataFrame(res)
+
+    return df
 
 def convert_json_to_csv(
     data: Union[Text, Any]=None,
@@ -102,7 +123,7 @@ def convert_json_to_csv(
     """
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
-
+    
     return
 
 def convert_csv_to_json(
@@ -130,7 +151,27 @@ def convert_csv_to_json(
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
 
-    return
+    data = {
+        "rasa_nlu_data": {
+            "common_examples": []
+        }
+    }
+    common_examples = data['rasa_nlu_data']['common_examples']
+
+    if isinstance(data, str):
+        data = pd.read_csv(data, encoding='utf-8')
+    
+    for i in range(len(data)):
+        example = line_csv_to_dict_output(
+            text=data[text_col][i], 
+            intent=data[intent_col][i], 
+            tags=data[tags_col][i]
+        )
+        common_examples.append(example)
+    
+    dumps_json(data=data, export_dir='./data', export_file='nlu.json')
+
+    return data
 
 
 def load_json(file: Text=None):

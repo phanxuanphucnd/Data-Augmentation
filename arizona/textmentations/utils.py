@@ -21,3 +21,117 @@ def find_sublist_in_list(sublist: list=None, list: list=None):
             results.append((idx, idx + len_sublist - 1))
     
     return results
+
+def line_csv_to_dict_output(text, intent, tags):
+    """
+    Convert outputs in rasa's format
+    
+    Args:
+        text: Text column
+        intent: Intent column
+        tags: Tags column
+
+    Returns: 
+        A result as rasa format. Example: \n
+            [{  \n
+                'confidence': confidence, \n 
+                'end': end, \n
+                'start': start, \n
+                'entity': entity, \n
+                'extractor': extractor, \n
+                'value': value  \n
+            }] \n
+    """
+    rasa_output = {}
+    rasa_output["text"] = text
+    rasa_output["intent"] = intent
+    tags = tags.split(' ')
+    words = text.split(' ')
+
+    # get index start words
+    ids = [0]
+    temp = 0
+    for i in range(1, len(words)):
+        ids.append(temp + len(words[i-1]) + 1)
+        temp = ids[-1]
+    ids.append(len(rasa_output["text"]) + 1)
+
+    entities = []
+    start = 0
+    entity = None
+    end = 0
+    ping = False
+
+    for i in range(len(tags)):
+        if ping == True:
+            if tags[i] == 'O':
+                end = i
+                entities.append({
+                    'entity': entity, 
+                    'start': ids[start], 
+                    'end': ids[end] - 1,                     
+                    'value': ' '.join(words[start:end]).strip()
+                })
+                ping = False
+
+            elif ("B-" in tags[i]) and (i == len(tags) - 1):
+                end = i
+                entities.append({
+                    'entity': entity, 
+                    'start': ids[start], 
+                    'end': ids[end] - 1,                     
+                    'value': ' '.join(words[start:end]).strip()
+                })
+
+                start = i
+                end = i + 1
+                entity = tags[i][2:]
+
+                entities.append({
+                    'entity': entity, 
+                    'start': ids[start], 
+                    'end': ids[end] - 1,
+                    'value': ' '.join(words[start:end]).strip()
+                })
+
+            elif "B-" in tags[i]:
+                end = i
+                entities.append({
+                    'entity': entity, 
+                    'start': ids[start], 
+                    'end': ids[end] - 1,                     
+                    'value': ' '.join(words[start:end]).strip()
+                })
+                ping = True
+                start = i
+                entity = tags[i][2:]
+
+            elif i == len(tags) - 1:
+                end = i + 1
+                entities.append({
+                    'entity': entity, 
+                    'start': ids[start], 
+                    'end': ids[end] - 1,
+                    'value': ' '.join(words[start:end]).strip()
+                })
+
+        else:
+            if "B-" in tags[i] and i == len(tags) - 1:
+                start = i
+                end = i + 1
+                entity = tags[i][2:]
+                entities.append({
+                    'entity': entity, 
+                    'start': ids[start], 
+                    'end': ids[end] - 1,
+                    'value': ' '.join(words[start:end]).strip()
+                })
+
+            elif "B-" in tags[i]:
+                start = i
+                entity = tags[i][2:]
+                ping = True
+
+    rasa_output["entities"] = entities
+
+    return rasa_output
