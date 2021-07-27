@@ -22,6 +22,25 @@ def find_sublist_in_list(sublist: list=None, list: list=None):
     
     return results
 
+def replace_sublist(
+    sublist: list=None, 
+    list: list=None, 
+    start_idx: int=None, 
+    end_idx: int=None
+):
+    list[start_idx: end_idx + 1] = sublist
+
+    return list
+
+def get_new_tags(
+    tags: list=None,
+    length: int=None
+):
+    tag_name = tags[0].split("-")[-1]
+    newtags = ['B-' + tag_name if i == 0 else 'I-' + tag_name for i in range(length)]
+
+    return newtags
+
 def line_csv_to_dict_output(text, intent, tags):
     """
     Convert outputs in rasa's format

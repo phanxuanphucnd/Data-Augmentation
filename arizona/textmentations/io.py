@@ -6,7 +6,6 @@ import json
 import regex
 import pandas as pd
 
-from clumper import Clumper
 from pandas import DataFrame
 from typing import Pattern, Text, Union, Any
 
@@ -79,25 +78,8 @@ def convert_yaml_to_csv(
     """
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
-    
-    res = (
-        Clumper.read_yaml(data)
-        .explode("nlu")
-        .keep(lambda d: "intent" in d["nlu"].keys())
-        .mutate(
-            examples=lambda d: d["nlu"]["examples"].split("\n"),
-            intent=lambda d: d["nlu"]["intent"],
-        )
-        .drop("nlu", "version")
-        .explode(text="examples")
-        .mutate(text=lambda d: d["text"][2:])
-        .keep(lambda d: d["text"] != "")
-        .collect()
-    )
 
-    df = pd.DataFrame(res)
-
-    return df
+    return 
 
 def convert_json_to_csv(
     data: Union[Text, Any]=None,
@@ -151,12 +133,12 @@ def convert_csv_to_json(
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
 
-    data = {
+    nlu_data = {
         "rasa_nlu_data": {
             "common_examples": []
         }
     }
-    common_examples = data['rasa_nlu_data']['common_examples']
+    common_examples = nlu_data['rasa_nlu_data']['common_examples']
 
     if isinstance(data, str):
         data = pd.read_csv(data, encoding='utf-8')
@@ -169,9 +151,9 @@ def convert_csv_to_json(
         )
         common_examples.append(example)
     
-    dumps_json(data=data, export_dir='./data', export_file='nlu.json')
+    dumps_json(data=nlu_data, export_dir=export_dir, export_file=export_file)
 
-    return data
+    return nlu_data
 
 
 def load_json(file: Text=None):

@@ -1,1 +1,3 @@
-clumper
+pandas
+numpy
+augly~=0.1.6
