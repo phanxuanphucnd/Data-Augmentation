@@ -12,6 +12,7 @@ from arizona.textmentations.utils import find_sublist_in_list, lower_text, repla
 def abbreviates_func(
     text: Text=None, 
     replace_thresold: float=0.5, 
+    num_samples: int=5,
     lowercase: bool=True,
     config_file: str='configs/abbreviations.json',
     intent: Text=None,
@@ -49,28 +50,33 @@ def abbreviates_func(
 
     # _words = copy.deepcopy(list_words)
 
-    for key, value in abbreviations_words.items():
-        if lowercase:
-            abb_word = [i.lower() for i in key.split(" ")]
-        else:
-            abb_word = key.split(" ")
+    for i in range(num_samples):
+        for key, value in abbreviations_words.items():
+            if lowercase:
+                abb_word = [i.lower() for i in key.split(" ")]
+            else:
+                abb_word = key.split(" ")
 
-        indexes = find_sublist_in_list(sublist=abb_word, list=list_words)
-        for index in indexes:
-            for candidate in value:
-                candidate = candidate.split(" ")
-                rd = random.random()
-                if rd >= replace_thresold:
-                    # Generate new tags
-                    newtags = get_new_tags(tags=list_tags[index[0]: index[1] + 1], length=len(candidate))
-                    list_words = replace_sublist(candidate, list_words, index[0], index[1])
-                    list_tags = replace_sublist(newtags, list_tags, index[0], index[1])
-
+            indexes = find_sublist_in_list(sublist=abb_word, list=list_words)
+            for index in indexes:
+                for candidate in value:
+                    candidate = candidate.split(" ")
+                    rd = random.random()
+                    if rd >= replace_thresold:
+                        # Generate new tags
+                        newtags = get_new_tags(tags=list_tags[index[0]: index[1] + 1], length=len(candidate))
+                        list_words = replace_sublist(candidate, list_words, index[0], index[1])
+                        list_tags = replace_sublist(newtags, list_tags, index[0], index[1])
+                        break
+        
+        output_data["text"].append(' '.join(list_words))
+        output_data["intent"].append(intent)
+        output_data["tags"].append(' '.join(tags))
     
-    return 
+    return output_data
 
 def remove_accent_func(
-    text: Text, 
+    text: Text=None, 
     replace_thresold: float=0.5, 
     num_samples: int=5, 
     lowercase: bool=True,
@@ -104,7 +110,7 @@ def remove_accent_func(
         
         output_data["text"].append(textout)
         output_data["intent"].append(intent)
-        output_data["tags"].append(tags)
+        output_data["tags"].append(' '.join(tags))
 
     return output_data
 
