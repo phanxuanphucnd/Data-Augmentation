@@ -2,7 +2,7 @@
 [![PyPI - License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/phanxuanphucnd/Data-Augumentation/blob/main/LICENSE)
 [![Open In Jupyter notebook](https://colab.research.google.com/assets/colab-badge.svg)]()
 
-<img src="docs/imgs/textmentations.gif" width="35%" height="35%" align="right" />
+<img src="docs/imgs/textmentations.gif" width="45%" height="45%" align="right" />
 
 ## Table of contents
 
