@@ -128,7 +128,9 @@ def keyboard_func(
 ):
     unikey_numbers = int(unikey_percent)
     keyboard_numbers = num_samples - unikey_numbers
-    viunikey = load_json(config_file)
+    maps = load_json(config_file)
+    viunikey = maps.get('examples', {})
+    
     output_data = {
         "text": [],
         "intent": [],
