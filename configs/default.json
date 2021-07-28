@@ -1,0 +1,28 @@
+{
+    "abbreviations": {
+        "parameters": {
+            "replace_thresold": 0.5,
+            "num_samples": 10,
+            "lowercase": true,
+            "config_file": "configs/abbreviations.json"
+        }
+    },
+    "keyboard": {
+        "parameters": {
+            "replace_thresold": 0.5,
+            "num_samples": 10,
+            "lowercase": true,
+            "aug_char_percent": 0.2,
+            "aug_word_percent": 0.1,
+            "unikey_percent": 0.5,
+            "config_file": "configs/unikey.json"
+        }
+    },
+    "remove_accent": {
+        "parameters": {
+            "replace_thresold": 0.5,
+            "num_samples": 10,
+            "lowercase": true
+        }
+    }
+}

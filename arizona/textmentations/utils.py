@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from arizona.textmentations.io import load_json
 from typing import Text
 from unicodedata import normalize as nl
 
@@ -165,3 +166,15 @@ def get_from_registry(key, registry):
         raise ValueError(
             f"Key `{key}` not supported, available options: {registry.keys()}"
         )
+
+def get_default_params(method, config_file: Text='configs/default.json'):
+    default = load_json(config_file)
+
+    if method in default:
+        params = default.get(method.lower())
+    else:
+        raise ValueError(
+            f"Method name `{method}` not supported, available options: {default.keys()}"
+        )
+
+    return params
