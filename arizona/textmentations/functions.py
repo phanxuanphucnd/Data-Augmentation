@@ -92,6 +92,9 @@ def remove_accent_func(
         "tags": []
     }
 
+    if lowercase:
+        text = lower_text(text)
+
     for i in range(num_samples):
         textout = ''
         for char in text:
@@ -103,9 +106,6 @@ def remove_accent_func(
                     textout += char
             else:
                 textout += char
-
-        if lowercase:
-            textout = lowercase(textout)
         
         output_data["text"].append(textout)
         output_data["intent"].append(intent)
@@ -126,10 +126,13 @@ def keyboard_func(
     config_file: str='configs/unikey.json',
     **kwargs
 ):
-    unikey_numbers = int(unikey_percent)
+    unikey_numbers = int(unikey_percent * num_samples)
     keyboard_numbers = num_samples - unikey_numbers
     maps = load_json(config_file)
     viunikey = maps.get('examples', {})
+
+    if lowercase:
+        text = lower_text(text)
     
     output_data = {
         "text": [],
@@ -137,7 +140,7 @@ def keyboard_func(
         "tags": []
     }
 
-    for i in range(len(unikey_numbers)):
+    for i in range(unikey_numbers):
         textlist = []
         for word in text.split(" "):
             chartmp = ''
@@ -149,14 +152,11 @@ def keyboard_func(
                         chars[i] = viunikey[c][0]
                         chartmp = viunikey[c][1]
                     if (i == len(chars) - 1):
-                        chars = ''.join(chars) + chartmp
-            
-                textlist.append(word)
+                        word = ''.join(chars) + chartmp
+
+            textlist.append(word)
 
         textout = " ".join(textlist)
-        if lowercase:
-            textout = lowercase(textout)
-        
         output_data["text"].append(textout)
         output_data["intent"].append(intent)
         output_data["tags"].append(tags)
@@ -167,8 +167,6 @@ def keyboard_func(
         aug_word_p=aug_word_percent, 
         n=keyboard_numbers
     )
-    if lowercase:
-        keyboard_outputs = [lower_text(t) for t in keyboard_outputs]
 
     for textout in keyboard_outputs:
         output_data["text"].append(textout)

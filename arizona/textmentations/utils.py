@@ -154,3 +154,14 @@ def line_csv_to_dict_output(text, intent, tags):
     rasa_output["entities"] = entities
 
     return rasa_output
+
+def get_from_registry(key, registry):
+    if hasattr(key, 'lower'):
+        key = key.lower()
+
+    if key in registry:
+        return registry[key]
+    else:
+        raise ValueError(
+            f"Key `{key}` not supported, available options: {registry.keys()}"
+        )
