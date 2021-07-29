@@ -1,0 +1,11 @@
+﻿text,intent,tags
+bạn giới thiệu qua công ty ftech đi,faq_company,O O O O B-work_unit I-work_unit I-work_unit O
+cho anh hỏi về cty,faq_company,O O O O O
+cho chú hỏi công ty công nghệ và gia đình,faq_company,O O O B-work_unit I-work_unit I-work_unit I-work_unit I-work_unit I-work_unit I-work_unit
+cháu có thể cho chú xin thông tin về công ty f-tech,faq_company,O O O O O O O O O B-work_unit I-work_unit I-work_unit
+chị cho tôi xin thông tin về công ty nhé,faq_company,O O O O O O O O O O
+cty làm về gì cô,faq_company,O O O O O
+hr và admin,inform,B-department I-department I-department
+huế,inform,B-location
+hành chính nhân sự,inform,B-department I-department I-department I-department
+ở ha noi có đang tuyển vị trí nào ko,ftech_ask_recruitment,O B-location I-location O O O O O O O

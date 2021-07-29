@@ -49,9 +49,7 @@ def abbreviates_func(
 
     assert len(list_words) == len(list_tags), f"Error: `{text}`. The numbers words must be equal to the number of tags."
 
-    COUNT = 0
-    while COUNT < num_samples:
-        print(f"count: {COUNT}")
+    for i in range(num_samples):
         list_words = text.split(" ")
         list_tags = tags.split(" ")
         for key, value in abbreviations_words.items():
@@ -65,7 +63,6 @@ def abbreviates_func(
                 for candidate in value:
                     candidate = candidate.split(" ")
                     rd = random.random()
-                    print(f"rd : {rd}")
                     if rd >= replace_thresold:
                         # Generate new tags
                         newtags = get_new_tags(tags=list_tags[index[0]: index[1] + 1], length=len(candidate))
@@ -76,9 +73,6 @@ def abbreviates_func(
         output_data["text"].append(' '.join(list_words))
         output_data["intent"].append(intent)
         output_data["tags"].append(' '.join(list_tags))
-
-        # TODO: Update COUNT
-        COUNT += 1
     
     return output_data
 

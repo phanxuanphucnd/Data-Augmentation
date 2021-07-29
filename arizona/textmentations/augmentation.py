@@ -33,6 +33,7 @@ class TextAugmentation:
     def get_default_params(method, config_file: Text='configs/default.json'):
         default = load_json(config_file)
 
+        params = []
         if method in default:
             params = default.get(method.lower())
         else:
@@ -44,13 +45,13 @@ class TextAugmentation:
     
     def augment(
         self, 
-        methods: Union[List[dict], dict], 
+        methods: Union[dict, List[Text]], 
         without_origin_data: bool=False,
         export_dir: Text='./output/',
         export_file: Text='aug_data.csv'
     ):
         # Methods examples: 
-        # methods= [{
+        # methods= {
         #   "abbreviations": {
         #                       "replace_thresold": 0.5, 
         #                       "num_samples": 10, 
@@ -70,14 +71,17 @@ class TextAugmentation:
         #                   "unikey_percent": 0.intent: Text=None,
         #                   "config_file": "configs/unikey.json"
         #               }
-        # }]
+        # }
 
         if not os.path.exists(export_dir):
             os.makedirs(export_dir)
         
-        for method, params in methods:
-            if not params:
-                params = self.get_default_params(method)
+        if isinstance(methods, List):
+            temp = {}
+            for method in methods:
+                _params = self.get_default_params(method)
+                temp[method] = _params
+            methods = temp
 
         outdata = {
             'text': [],
@@ -85,7 +89,7 @@ class TextAugmentation:
             'tags': []
         }
         for i in tqdm(range(len(self.data))):
-            for method, params in methods:
+            for method, params in methods.items():
                 results = get_build_method(method.lower())(
                     self.data[self.text_col][i],
                     self.data[self.intent_col][i],
@@ -98,6 +102,9 @@ class TextAugmentation:
                 outdata['tags'].extend(results['tags'])
 
         data_df = pd.DataFrame.from_dict(outdata)
+        
+        # TODO: Drop duplicates
+        data_df = data_df.drop_duplicates(subset=self.text_col, keep='first')
 
         if without_origin_data:
             df = data_df
@@ -107,7 +114,7 @@ class TextAugmentation:
         # TODO: Write to a file
         save_path = os.path.join(export_dir, export_file)
         df.to_csv(save_path, encoding='utf-8', index=False)
-        
+
         return df
 
 
