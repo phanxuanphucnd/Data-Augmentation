@@ -49,10 +49,7 @@ def convert_csv_to_yaml(
     Returns:
         A file yaml/ yml storaged in `export_file`.
     """
-    if not os.path.exists(export_dir):
-        os.makedirs(export_dir)
-
-    return
+    raise NotImplementedError
 
 def convert_yaml_to_csv(
     data: Union[Text, Any]=None,
@@ -76,10 +73,7 @@ def convert_yaml_to_csv(
     Returns:
         A DataFrame and a csv file stored in `export_file`.
     """
-    if not os.path.exists(export_dir):
-        os.makedirs(export_dir)
-
-    return 
+    raise NotImplementedError
 
 def convert_json_to_csv(
     data: Union[Text, Any]=None,
@@ -103,10 +97,7 @@ def convert_json_to_csv(
     Returns:
         A file csv storaged in `export_file` if not None, else return a DataFrame.
     """
-    if not os.path.exists(export_dir):
-        os.makedirs(export_dir)
-    
-    return
+    raise NotImplementedError
 
 def convert_csv_to_json(
     data: Union[DataFrame, Text]=None, 
