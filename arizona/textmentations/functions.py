@@ -51,6 +51,9 @@ def abbreviates_func(
 
     COUNT = 0
     while COUNT < num_samples:
+        print(f"count: {COUNT}")
+        list_words = text.split(" ")
+        list_tags = tags.split(" ")
         for key, value in abbreviations_words.items():
             if lowercase:
                 abb_word = [i.lower() for i in key.split(" ")]
@@ -62,6 +65,7 @@ def abbreviates_func(
                 for candidate in value:
                     candidate = candidate.split(" ")
                     rd = random.random()
+                    print(f"rd : {rd}")
                     if rd >= replace_thresold:
                         # Generate new tags
                         newtags = get_new_tags(tags=list_tags[index[0]: index[1] + 1], length=len(candidate))
@@ -71,7 +75,7 @@ def abbreviates_func(
         
         output_data["text"].append(' '.join(list_words))
         output_data["intent"].append(intent)
-        output_data["tags"].append(' '.join(tags))
+        output_data["tags"].append(' '.join(list_tags))
 
         # TODO: Update COUNT
         COUNT += 1
