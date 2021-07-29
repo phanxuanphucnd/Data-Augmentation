@@ -7,6 +7,7 @@ from tqdm import tqdm
 from pandas import DataFrame
 from typing import List, Text, Union
 
+from arizona import DEFAULT_PARAMETERS
 from arizona.textmentations.functions import *
 from arizona.textmentations.io import load_json
 from arizona.textmentations.utils import get_from_registry
@@ -30,15 +31,13 @@ class TextAugmentation:
         self.tags_col = tags_col
 
     @staticmethod
-    def get_default_params(method, config_file: Text='configs/default.json'):
-        default = load_json(config_file)
-
+    def get_default_params(method):
         params = []
-        if method in default:
-            params = default.get(method.lower())
+        if method in DEFAULT_PARAMETERS:
+            params = DEFAULT_PARAMETERS.get(method.lower())
         else:
             raise ValueError(
-                f"Method name `{method}` not supported, available options: {default.keys()}"
+                f"Method name `{method}` not supported, available options: {DEFAULT_PARAMETERS.keys()}"
             )
 
         return params
@@ -47,6 +46,7 @@ class TextAugmentation:
         self, 
         methods: Union[dict, List[Text]], 
         without_origin_data: bool=False,
+        write_file: bool=True,
         export_dir: Text='./output/',
         export_file: Text='aug_data.csv'
     ):
@@ -72,9 +72,6 @@ class TextAugmentation:
         #                   "config_file": "configs/unikey.json"
         #               }
         # }
-
-        if not os.path.exists(export_dir):
-            os.makedirs(export_dir)
         
         if isinstance(methods, List):
             temp = {}
@@ -112,8 +109,12 @@ class TextAugmentation:
             df = self.data + data_df
         
         # TODO: Write to a file
-        save_path = os.path.join(export_dir, export_file)
-        df.to_csv(save_path, encoding='utf-8', index=False)
+        if write_file:
+            if not os.path.exists(export_dir):
+                os.makedirs(export_dir)
+            
+            save_path = os.path.join(export_dir, export_file)
+            df.to_csv(save_path, encoding='utf-8', index=False)
 
         return df
 

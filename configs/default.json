@@ -1,13 +1,13 @@
 {
     "abbreviation": {
-        "replace_thresold": 0.6,
-        "num_samples": 7,
+        "replace_thresold": 0.5,
+        "num_samples": 10,
         "lowercase": true,
         "config_file": "configs/abbreviations.json"
     },
     "keyboard": {
-        "replace_thresold": 0.6,
-        "num_samples": 7,
+        "replace_thresold": 0.5,
+        "num_samples": 10,
         "lowercase": true,
         "aug_char_percent": 0.2,
         "aug_word_percent": 0.1,
@@ -16,7 +16,7 @@
     },
     "remove_accent": {
         "replace_thresold": 0.4,
-        "num_samples": 7,
+        "num_samples": 10,
         "lowercase": true
     }
 }
