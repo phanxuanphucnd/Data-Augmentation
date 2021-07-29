@@ -12,12 +12,12 @@ from arizona.textmentations.utils import find_sublist_in_list, lower_text, repla
 
 def abbreviates_func(
     text: Text=None, 
+    intent: Text=None,
+    tags: Text=None,
     replace_thresold: float=0.5, 
     num_samples: int=5,
     lowercase: bool=True,
     config_file: str='configs/abbreviations.json',
-    intent: Text=None,
-    tags: Text=None,
     **kwargs
 ):
     # Check config file
@@ -84,11 +84,11 @@ def abbreviates_func(
 
 def remove_accent_func(
     text: Text=None, 
+    intent: Text=None,
+    tags: Text=None,
     replace_thresold: float=0.5, 
     num_samples: int=5, 
     lowercase: bool=True,
-    intent: Text=None,
-    tags: Text=None,
     **kwargs
 ):
     s1 = u'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹ'
@@ -123,11 +123,11 @@ def remove_accent_func(
 
 def keyboard_func(
     text: Text, 
+    intent: Text=None, 
+    tags: Text=None,
     replace_thresold: float=0.5, 
     num_samples: int=5, 
-    lowercase: bool=True, 
-    intent: Text=None, 
-    tags: Text=None, 
+    lowercase: bool=True,  
     aug_char_percent: float=0.2,
     aug_word_percent: float=0.1,
     unikey_percent: float=0.5,

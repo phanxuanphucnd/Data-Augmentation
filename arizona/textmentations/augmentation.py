@@ -3,6 +3,7 @@
 import os
 import pandas as pd
 
+from tqdm import tqdm
 from pandas import DataFrame
 from typing import List, Text, Union
 
@@ -44,14 +45,31 @@ class TextAugmentation:
     def augment(
         self, 
         methods: Union[List[dict], dict], 
+        without_origin_data: bool=False,
         export_dir: Text='./output/',
         export_file: Text='aug_data.csv'
     ):
-        # methods examples: 
+        # Methods examples: 
         # methods= [{
-        #   "abbreviations": {"replace_thresold": 0.5, "num_samples": 10, "lowercase": true, "config_file": "configs/abbreviations.json"},
-        #   "remove_accent": {"replace_thresold": 0.5, "num_samples": 10, "lowercase": true}
-        #   "keyboard": {"replace_thresold": 0.5, "num_samples": 10, "lowercase": true, "aug_char_percent": 0.2, "aug_word_percent": 0.1, "unikey_percent": 0.5, "config_file": "configs/unikey.json"}
+        #   "abbreviations": {
+        #                       "replace_thresold": 0.5, 
+        #                       "num_samples": 10, 
+        #                       "lowercase": true, 
+        #                       "config_file": "configs/abbreviations.json"},
+        #   "remove_accent": {
+        #                       "replace_thresold": 0.5, 
+        #                       "num_samples": 10, 
+        #                       "lowercase": true
+        #                    }
+        #   "keyboard": {
+        #                   "replace_thresold": 0.5, 
+        #                   "num_samples": 10, 
+        #                   "lowercase": true, 
+        #                   "aug_char_percent": 0.2, 
+        #                   "aug_word_percent": 0.1, 
+        #                   "unikey_percent": 0.intent: Text=None,
+        #                   "config_file": "configs/unikey.json"
+        #               }
         # }]
 
         if not os.path.exists(export_dir):
@@ -61,13 +79,41 @@ class TextAugmentation:
             if not params:
                 params = self.get_default_params(method)
 
-        raise NotImplementedError
+        outdata = {
+            'text': [],
+            'intent': [],
+            'tags': []
+        }
+        for i in tqdm(range(len(self.data))):
+            for method, params in methods:
+                results = get_build_method(method.lower())(
+                    self.data[self.text_col][i],
+                    self.data[self.intent_col][i],
+                    self.data[self.tags_col][i],
+                    **params
+                )
+
+                outdata['text'].extend(results['text'])
+                outdata['intent'].extend(results['intent'])
+                outdata['tags'].extend(results['tags'])
+
+        data_df = pd.DataFrame.from_dict(outdata)
+
+        if without_origin_data:
+            df = data_df
+        else:
+            df = self.data + data_df
+        
+        # TODO: Write to a file
+        save_path = os.path.join(export_dir, export_file)
+        df.to_csv(save_path, encoding='utf-8', index=False)
+        
+        return df
 
 
 def get_build_method(method_type):
     return get_from_registry(method_type, methods_registry)
 
-    
 methods_registry = {
     'keyboard': keyboard_func,
     'abbreviation': abbreviates_func,

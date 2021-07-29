@@ -1,3 +1,4 @@
 pandas
 numpy
 augly~=0.1.6
+tqdm
