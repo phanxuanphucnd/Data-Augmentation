@@ -1,4 +1,3 @@
-from re import M
 from arizona.textmentations.utils import line_csv_to_dict_output
 from arizona.textmentations.io import convert_yaml_to_csv, convert_csv_to_json
 
