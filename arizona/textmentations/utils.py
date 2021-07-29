@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from arizona.textmentations.io import load_json
 from typing import Text
 from unicodedata import normalize as nl
 
@@ -38,7 +37,16 @@ def get_new_tags(
     length: int=None
 ):
     tag_name = tags[0].split("-")[-1]
-    newtags = ['B-' + tag_name if i == 0 else 'I-' + tag_name for i in range(length)]
+
+    newtags = []
+    for i in range(length):
+        if tag_name != 'O':
+            if i == 0:
+                newtags.append('B-' + tag_name)
+            else:
+                newtags.append('I-' + tag_name)
+        else:
+            newtags.append('O')
 
     return newtags
 
@@ -166,15 +174,3 @@ def get_from_registry(key, registry):
         raise ValueError(
             f"Key `{key}` not supported, available options: {registry.keys()}"
         )
-
-def get_default_params(method, config_file: Text='configs/default.json'):
-    default = load_json(config_file)
-
-    if method in default:
-        params = default.get(method.lower())
-    else:
-        raise ValueError(
-            f"Method name `{method}` not supported, available options: {default.keys()}"
-        )
-
-    return params

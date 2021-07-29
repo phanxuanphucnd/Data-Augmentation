@@ -49,7 +49,8 @@ def abbreviates_func(
 
     assert len(list_words) == len(list_tags), f"Error: `{text}`. The numbers words must be equal to the number of tags."
 
-    for i in range(num_samples):
+    COUNT = 0
+    while COUNT < num_samples:
         for key, value in abbreviations_words.items():
             if lowercase:
                 abb_word = [i.lower() for i in key.split(" ")]
@@ -71,6 +72,9 @@ def abbreviates_func(
         output_data["text"].append(' '.join(list_words))
         output_data["intent"].append(intent)
         output_data["tags"].append(' '.join(tags))
+
+        # TODO: Update COUNT
+        COUNT += 1
     
     return output_data
 

@@ -7,7 +7,8 @@ from pandas import DataFrame
 from typing import List, Text, Union
 
 from arizona.textmentations.functions import *
-from arizona.textmentations.utils import get_from_registry, get_default_params
+from arizona.textmentations.io import load_json
+from arizona.textmentations.utils import get_from_registry
 
 class TextAugmentation:
     def __init__(
@@ -26,6 +27,19 @@ class TextAugmentation:
         self.text_col = text_col
         self.intent_col = intent_col
         self.tags_col = tags_col
+
+    @staticmethod
+    def get_default_params(method, config_file: Text='configs/default.json'):
+        default = load_json(config_file)
+
+        if method in default:
+            params = default.get(method.lower())
+        else:
+            raise ValueError(
+                f"Method name `{method}` not supported, available options: {default.keys()}"
+            )
+
+        return params
     
     def augment(
         self, 
@@ -45,7 +59,7 @@ class TextAugmentation:
         
         for method, params in methods:
             if not params:
-                params = get_default_params(method)
+                params = self.get_default_params(method)
 
         raise NotImplementedError
 
