@@ -15,7 +15,7 @@
 
 ## <a name='introduction'></a> Introduction
 
-Arizona-textmentations is a library to augment Text data for the Nature Language Understanding (NLU) problem, an important component in building chatbots. The library is built on some approaches as follows:
+**Arizona-textmentations** is a library to augment Text data for the Nature Language Understanding (NLU) problem, an important component in building chatbots. The library is built on some approaches as follows:
 
 - ``remove_accent``: Remove the accents of some characters according to a random distribution.
 - ``abbreviation``: Replace some correctly spelled-words with Vietnamese abbreviation-words in Vietnamese, following ours trend in social networks.
