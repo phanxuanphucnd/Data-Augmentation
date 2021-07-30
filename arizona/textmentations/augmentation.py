@@ -48,7 +48,7 @@ class TextAugmentation:
         without_origin_data: bool=False,
         write_file: bool=True,
         export_dir: Text='./output/',
-        export_file: Text='aug_data.csv'
+        export_file: Text='augumented_data.csv'
     ):
         # Methods examples: 
         # methods= {
@@ -98,15 +98,18 @@ class TextAugmentation:
                 outdata['intent'].extend(results['intent'])
                 outdata['tags'].extend(results['tags'])
 
-        data_df = pd.DataFrame.from_dict(outdata)
+        augmented_df = pd.DataFrame.from_dict(outdata)
         
-        # TODO: Drop duplicates
-        data_df = data_df.drop_duplicates(subset=self.text_col, keep='first')
+        # TODO: Drop duplicates augmented data
+        augmented_df = augmented_df.drop_duplicates(subset=self.text_col, keep='first')
 
         if without_origin_data:
-            df = data_df
+            df = augmented_df
         else:
-            df = self.data + data_df
+            df = pd.concat([self.data, augmented_df])
+
+        # TODO: Drop duplicates output data 
+        df = df.drop_duplicates(subset=self.text_col, keep='first')
         
         # TODO: Write to a file
         if write_file:
