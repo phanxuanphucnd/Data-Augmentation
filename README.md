@@ -12,7 +12,6 @@
     - [Data structure](#data_structure)
     - [Example usage](#usage)
 
-
 ## <a name='introduction'></a> Introduction
 
 **Arizona textmentations** is a library to augment Text data for the Nature Language Understanding (NLU) problem, an important component in building chatbots. The library is built on some approaches as follows:
@@ -20,6 +19,8 @@
 - ``remove_accent``: Remove the accents of some characters according to a random distribution.
 - ``abbreviation``: Replace some correctly spelled-words with Vietnamese abbreviation-words in Vietnamese, following ours trend in social networks.
 - ``keyboard``: Based on how we can enter the wrong keys, or unikey in Vietnamese.
+
+We can reference to [Documentation](https://phanxuanphucnd.github.io/Data-Augumentation/).
 
 ## <a name='how_to_use'></a> How to use `arizona textmentations`
 
