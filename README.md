@@ -44,7 +44,7 @@ The input maybe a text sentence or a .csv file contains 3 columns:
 ```py
 from arizona.textmentations.functions import abbreviates_func
 
-text = "giới thiệu về công ty ftech"
+text = "giới thiệu về công ty abc"
 
 results = abbreviates_func(
     text,
@@ -60,7 +60,7 @@ pprint(results)
 
 from arizona.textmentations.functions import keyboard_func
 
-text = "giới thiệu về công ty ftech"
+text = "giới thiệu về công ty abc"
 
 results = keyboard_func(
     text,
@@ -79,7 +79,7 @@ pprint(results)
 
 from arizona.textmentations.functions import remove_accent_func
 
-text = "giới thiệu về công ty ftech"
+text = "giới thiệu về công ty abc"
 
 results = remove_accent_func(
     text,
